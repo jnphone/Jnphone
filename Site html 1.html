@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>J&N Phone – Réparation Téléphones & Tablettes – Muzillac</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.2/babel.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'DM Sans', sans-serif; background: #0a0f1e; color: #e8eaf6; overflow-x: hidden; }
+  ::-webkit-scrollbar { width: 5px; }
+  ::-webkit-scrollbar-track { background: #0a0f1e; }
+  ::-webkit-scrollbar-thumb { background: #1a4fd6; border-radius: 3px; }
+  .card { transition: all 0.15s ease; cursor: pointer; }
+  .card:hover { border-color: #3b6af0 !important; transform: translateY(-3px); background: rgba(59,106,240,0.1) !important; }
+  .rep-card { transition: all 0.15s ease; cursor: pointer; }
+  .rep-card:hover { border-color: #00d4ff !important; background: rgba(0,212,255,0.08) !important; transform: translateY(-2px); }
+  .nav-btn { transition: all 0.15s; }
+  .nav-btn:hover { color: #00d4ff !important; }
+  .cta:hover { background: #3b6af0 !important; transform: translateY(-2px); }
+  .cta { transition: all 0.15s; }
+  input, textarea, select { transition: border-color 0.2s; }
+  input:focus, textarea:focus, select:focus { border-color: #3b6af0 !important; outline: none; }
+  input::placeholder, textarea::placeholder { color: #3a4060; }
+  textarea { resize: vertical; }
+  a { text-decoration: none; }
+  .tag:hover { opacity: 0.75; }
+  .tag { transition: opacity 0.15s; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+
+const { useState } = React;
+
+const data = {
+  Apple: {
+    icon: "🍎",
+    models: {
+      "iPhone 16 Pro Max": { "Écran OLED": "249 €", "Batterie": "89 €", "Connecteur de charge": "79 €", "Vitre arrière": "119 €", "Caméra arrière": "149 €", "Haut-parleur": "59 €" },
+      "iPhone 16 Pro": { "Écran OLED": "229 €", "Batterie": "89 €", "Connecteur de charge": "79 €", "Vitre arrière": "109 €", "Caméra arrière": "139 €", "Haut-parleur": "55 €" },
+      "iPhone 16 / 16 Plus": { "Écran OLED": "199 €", "Batterie": "79 €", "Connecteur de charge": "69 €", "Vitre arrière": "99 €", "Caméra arrière": "119 €", "Haut-parleur": "49 €" },
+      "iPhone 15 Pro Max": { "Écran OLED": "219 €", "Batterie": "85 €", "Connecteur de charge": "75 €", "Vitre arrière": "109 €", "Caméra arrière": "139 €", "Haut-parleur": "55 €" },
+      "iPhone 15 Pro": { "Écran OLED": "199 €", "Batterie": "79 €", "Connecteur de charge": "69 €", "Vitre arrière": "99 €", "Caméra arrière": "129 €", "Haut-parleur": "49 €" },
+      "iPhone 15 / 15 Plus": { "Écran OLED": "169 €", "Batterie": "69 €", "Connecteur de charge": "59 €", "Vitre arrière": "89 €", "Caméra arrière": "109 €", "Haut-parleur": "45 €" },
+      "iPhone 14 Pro Max": { "Écran OLED": "189 €", "Batterie": "75 €", "Connecteur de charge": "65 €", "Vitre arrière": "99 €", "Caméra arrière": "119 €", "Haut-parleur": "49 €" },
+      "iPhone 14 Pro": { "Écran OLED": "169 €", "Batterie": "69 €", "Connecteur de charge": "59 €", "Vitre arrière": "89 €", "Caméra arrière": "109 €", "Haut-parleur": "45 €" },
+      "iPhone 14 / 14 Plus": { "Écran OLED": "149 €", "Batterie": "69 €", "Connecteur de charge": "59 €", "Vitre arrière": "89 €", "Caméra arrière": "99 €", "Haut-parleur": "45 €" },
+      "iPhone 13 Pro Max": { "Écran OLED": "159 €", "Batterie": "65 €", "Connecteur de charge": "55 €", "Vitre arrière": "85 €", "Caméra arrière": "109 €", "Haut-parleur": "45 €" },
+      "iPhone 13 Pro": { "Écran OLED": "149 €", "Batterie": "59 €", "Connecteur de charge": "49 €", "Vitre arrière": "79 €", "Caméra arrière": "99 €", "Haut-parleur": "39 €" },
+      "iPhone 13 / 13 Mini": { "Écran OLED": "129 €", "Batterie": "59 €", "Connecteur de charge": "49 €", "Vitre arrière": "79 €", "Caméra arrière": "89 €", "Haut-parleur": "39 €" },
+      "iPhone 12 Pro Max": { "Écran OLED": "139 €", "Batterie": "55 €", "Connecteur de charge": "49 €", "Vitre arrière": "75 €", "Caméra arrière": "99 €", "Haut-parleur": "39 €" },
+      "iPhone 12 Pro": { "Écran OLED": "129 €", "Batterie": "49 €", "Connecteur de charge": "45 €", "Vitre arrière": "69 €", "Caméra arrière": "89 €", "Haut-parleur": "35 €" },
+      "iPhone 12 / 12 Mini": { "Écran OLED": "109 €", "Batterie": "49 €", "Connecteur de charge": "45 €", "Vitre arrière": "69 €", "Caméra arrière": "79 €", "Haut-parleur": "35 €" },
+      "iPhone 11 Pro Max": { "Écran OLED": "119 €", "Batterie": "45 €", "Connecteur de charge": "42 €", "Vitre arrière": "65 €", "Caméra arrière": "79 €", "Haut-parleur": "35 €" },
+      "iPhone 11 / 11 Pro": { "Écran LCD": "89 €", "Batterie": "39 €", "Connecteur de charge": "39 €", "Vitre arrière": "59 €", "Caméra arrière": "69 €", "Haut-parleur": "29 €" },
+      "iPhone XS Max / XS": { "Écran OLED": "99 €", "Batterie": "39 €", "Connecteur de charge": "39 €", "Vitre arrière": "59 €", "Caméra arrière": "69 €", "Haut-parleur": "29 €" },
+      "iPhone XR": { "Écran LCD": "79 €", "Batterie": "39 €", "Connecteur de charge": "39 €", "Vitre arrière": "55 €", "Caméra arrière": "59 €", "Haut-parleur": "29 €" },
+      "iPhone SE (2022/2020)": { "Écran LCD": "69 €", "Batterie": "35 €", "Connecteur de charge": "35 €", "Vitre arrière": "49 €", "Caméra arrière": "55 €", "Haut-parleur": "25 €" },
+      "iPad Air 5ème gén.": { "Écran LCD": "179 €", "Batterie": "89 €", "Connecteur de charge": "69 €", "Vitre tactile": "99 €" },
+      "iPad 10ème gén.": { "Écran LCD": "149 €", "Batterie": "79 €", "Connecteur de charge": "59 €", "Vitre tactile": "79 €" },
+      "iPad mini 6": { "Écran LCD": "159 €", "Batterie": "79 €", "Connecteur de charge": "65 €", "Vitre tactile": "89 €" },
+    },
+  },
+  Samsung: {
+    icon: "📱",
+    models: {
+      "Galaxy S24 Ultra": { "Écran AMOLED": "229 €", "Batterie": "79 €", "Connecteur de charge": "69 €", "Vitre arrière": "99 €", "Caméra arrière": "129 €" },
+      "Galaxy S24 / S24+": { "Écran AMOLED": "179 €", "Batterie": "69 €", "Connecteur de charge": "59 €", "Vitre arrière": "79 €", "Caméra arrière": "99 €" },
+      "Galaxy S23 Ultra": { "Écran AMOLED": "209 €", "Batterie": "75 €", "Connecteur de charge": "65 €", "Vitre arrière": "89 €", "Caméra arrière": "119 €" },
+      "Galaxy S23 / S23+": { "Écran AMOLED": "159 €", "Batterie": "65 €", "Connecteur de charge": "55 €", "Vitre arrière": "75 €", "Caméra arrière": "89 €" },
+      "Galaxy S22 / S22+": { "Écran AMOLED": "139 €", "Batterie": "59 €", "Connecteur de charge": "49 €", "Vitre arrière": "69 €", "Caméra arrière": "79 €" },
+      "Galaxy S21 / S21+": { "Écran AMOLED": "119 €", "Batterie": "55 €", "Connecteur de charge": "45 €", "Vitre arrière": "59 €", "Caméra arrière": "69 €" },
+      "Galaxy A55 / A54": { "Écran AMOLED": "119 €", "Batterie": "49 €", "Connecteur de charge": "45 €", "Vitre arrière": "59 €", "Caméra arrière": "69 €" },
+      "Galaxy A35 / A34": { "Écran AMOLED": "89 €", "Batterie": "39 €", "Connecteur de charge": "39 €", "Vitre arrière": "49 €", "Caméra arrière": "55 €" },
+      "Galaxy A25 / A15": { "Écran LCD": "69 €", "Batterie": "35 €", "Connecteur de charge": "35 €", "Vitre arrière": "39 €", "Caméra arrière": "45 €" },
+      "Galaxy Z Flip 5 / 6": { "Écran principal": "289 €", "Écran cover": "119 €", "Batterie": "89 €", "Connecteur de charge": "69 €" },
+      "Galaxy Z Fold 5": { "Écran principal": "349 €", "Écran cover": "149 €", "Batterie": "99 €", "Connecteur de charge": "79 €" },
+      "Galaxy Tab S9": { "Écran AMOLED": "219 €", "Batterie": "89 €", "Connecteur de charge": "65 €", "Vitre arrière": "79 €" },
+      "Galaxy Tab A9+": { "Écran LCD": "129 €", "Batterie": "65 €", "Connecteur de charge": "49 €", "Vitre arrière": "59 €" },
+    },
+  },
+  Xiaomi: {
+    icon: "⚡",
+    models: {
+      "Xiaomi 14 Pro": { "Écran AMOLED": "179 €", "Batterie": "65 €", "Connecteur de charge": "55 €", "Vitre arrière": "69 €", "Caméra arrière": "89 €" },
+      "Xiaomi 14 / 14T": { "Écran AMOLED": "149 €", "Batterie": "59 €", "Connecteur de charge": "49 €", "Vitre arrière": "59 €", "Caméra arrière": "79 €" },
+      "Xiaomi 13T Pro": { "Écran AMOLED": "139 €", "Batterie": "55 €", "Connecteur de charge": "49 €", "Vitre arrière": "59 €", "Caméra arrière": "69 €" },
+      "Redmi Note 13 Pro+": { "Écran AMOLED": "109 €", "Batterie": "49 €", "Connecteur de charge": "42 €", "Vitre arrière": "55 €", "Caméra arrière": "59 €" },
+      "Redmi Note 13 Pro": { "Écran AMOLED": "99 €", "Batterie": "45 €", "Connecteur de charge": "39 €", "Vitre arrière": "49 €", "Caméra arrière": "55 €" },
+      "Redmi Note 12": { "Écran AMOLED": "79 €", "Batterie": "39 €", "Connecteur de charge": "35 €", "Vitre arrière": "39 €", "Caméra arrière": "45 €" },
+      "Redmi 13 / 13C": { "Écran LCD": "59 €", "Batterie": "35 €", "Connecteur de charge": "32 €", "Vitre arrière": "35 €", "Caméra arrière": "39 €" },
+      "Poco X6 Pro": { "Écran AMOLED": "109 €", "Batterie": "49 €", "Connecteur de charge": "42 €", "Vitre arrière": "55 €", "Caméra arrière": "59 €" },
+      "Poco F5 / F5 Pro": { "Écran AMOLED": "119 €", "Batterie": "49 €", "Connecteur de charge": "45 €", "Vitre arrière": "55 €", "Caméra arrière": "65 €" },
+    },
+  },
+  Huawei: {
+    icon: "🔷",
+    models: {
+      "P60 Pro": { "Écran OLED": "169 €", "Batterie": "69 €", "Connecteur de charge": "59 €", "Vitre arrière": "75 €" },
+      "P50 Pro": { "Écran OLED": "149 €", "Batterie": "65 €", "Connecteur de charge": "55 €", "Vitre arrière": "69 €" },
+      "P40 Pro": { "Écran OLED": "129 €", "Batterie": "59 €", "Connecteur de charge": "49 €", "Vitre arrière": "65 €" },
+      "Mate 50 Pro": { "Écran OLED": "179 €", "Batterie": "69 €", "Connecteur de charge": "59 €", "Vitre arrière": "79 €" },
+      "Nova 12": { "Écran OLED": "99 €", "Batterie": "49 €", "Connecteur de charge": "42 €", "Vitre arrière": "49 €" },
+    },
+  },
+  OnePlus: {
+    icon: "🔴",
+    models: {
+      "OnePlus 12": { "Écran AMOLED": "169 €", "Batterie": "69 €", "Connecteur de charge": "59 €", "Vitre arrière": "69 €", "Caméra arrière": "89 €" },
+      "OnePlus 11": { "Écran AMOLED": "149 €", "Batterie": "65 €", "Connecteur de charge": "55 €", "Vitre arrière": "65 €", "Caméra arrière": "79 €" },
+      "OnePlus Nord 3": { "Écran AMOLED": "119 €", "Batterie": "55 €", "Connecteur de charge": "49 €", "Vitre arrière": "55 €", "Caméra arrière": "65 €" },
+      "OnePlus Nord CE 3": { "Écran AMOLED": "89 €", "Batterie": "45 €", "Connecteur de charge": "39 €", "Vitre arrière": "45 €", "Caméra arrière": "49 €" },
+    },
+  },
+};
+
+const steps = ["Marque", "Modèle", "Réparation", "Réservation"];
+const inp = { background: "#0d1224", border: "1px solid rgba(59,106,240,0.25)", color: "#e8eaf6", padding: "12px 14px", borderRadius: 10, fontSize: "0.92rem", fontFamily: "'DM Sans', sans-serif", width: "100%" };
+
+function App() {
+  const [step, setStep] = useState(0);
+  const [brand, setBrand] = useState("");
+  const [model, setModel] = useState("");
+  const [repair, setRepair] = useState("");
+  const [price, setPrice] = useState("");
+  const [form, setForm] = useState({ nom: "", tel: "", info: "" });
+  const [submitted, setSubmitted] = useState(false);
+  const [search, setSearch] = useState("");
+
+  const reset = () => { setStep(0); setBrand(""); setModel(""); setRepair(""); setPrice(""); setForm({ nom: "", tel: "", info: "" }); setSubmitted(false); setSearch(""); };
+
+  const selectBrand = (b) => { setBrand(b); setModel(""); setRepair(""); setSearch(""); setStep(1); window.scrollTo({ top: 0, behavior: "smooth" }); };
+  const selectModel = (m) => { setModel(m); setRepair(""); setStep(2); window.scrollTo({ top: 0, behavior: "smooth" }); };
+  const selectRepair = (r, p) => { setRepair(r); setPrice(p); setStep(3); window.scrollTo({ top: 0, behavior: "smooth" }); };
+  const goStep = (i) => { if (i < step) { setStep(i); if (i < 1) setBrand(""); if (i < 2) setModel(""); if (i < 3) setRepair(""); } };
+
+  const filteredModels = brand ? Object.keys(data[brand].models).filter(m => m.toLowerCase().includes(search.toLowerCase())) : [];
+
+  const handleSubmit = () => {
+    if (!form.nom || !form.tel) { alert("Merci de remplir votre nom et téléphone."); return; }
+    setSubmitted(true);
+  };
+
+  return (
+    <div>
+      {/* HEADER */}
+      <div style={{ background: "#131829", borderBottom: "1px solid rgba(59,106,240,0.25)", padding: "0 5%", display: "flex", alignItems: "center", justifyContent: "space-between", height: 62, position: "sticky", top: 0, zIndex: 100 }}>
+        <div onClick={reset} style={{ fontFamily: "Syne, sans-serif", fontWeight: 800, fontSize: "1.35rem", color: "#fff", cursor: "pointer", letterSpacing: "-0.5px" }}>
+          J<span style={{ color: "#00d4ff" }}>&</span>N Phone
+        </div>
+        <div style={{ fontSize: "0.78rem", color: "#6b7a9e" }}>📍 Muzillac, Morbihan · 56</div>
+      </div>
+
+      {/* HERO */}
+      <div style={{ background: "linear-gradient(135deg, #080d1a 0%, #131829 45%, #0b1550 100%)", padding: "52px 5% 42px", textAlign: "center", position: "relative", overflow: "hidden" }}>
+        <div style={{ position: "absolute", top: -120, left: "50%", transform: "translateX(-50%)", width: 700, height: 700, background: "radial-gradient(circle, rgba(26,79,214,0.18) 0%, transparent 65%)", pointerEvents: "none" }} />
+        <div style={{ display: "inline-block", background: "rgba(0,212,255,0.08)", border: "1px solid rgba(0,212,255,0.25)", color: "#00d4ff", fontSize: "0.7rem", fontWeight: 700, letterSpacing: "2px", textTransform: "uppercase", padding: "5px 16px", borderRadius: 20, marginBottom: 16 }}>
+          ⚡ Réparation Express – Même jour
+        </div>
+        <h1 style={{ fontFamily: "Syne, sans-serif", fontSize: "clamp(1.7rem,4.5vw,2.8rem)", fontWeight: 800, color: "#fff", lineHeight: 1.2, marginBottom: 12 }}>
+          Réparez votre <span style={{ color: "#00d4ff" }}>téléphone</span><br />ou tablette rapidement
+        </h1>
+        <p style={{ color: "#6b7a9e", fontSize: "0.92rem", maxWidth: 440, margin: "0 auto 0" }}>Tarifs transparents · Pièces qualité · Garantie 3 mois</p>
+        <div style={{ display: "flex", justifyContent: "center", gap: "2.5rem", marginTop: 36, flexWrap: "wrap" }}>
+          {[["500+","Réparations"], ["J+0","Même jour"], ["3 mois","Garantie"], ["100%","Testé"]].map(([n,l]) => (
+            <div key={l} style={{ textAlign: "center" }}>
+              <div style={{ fontFamily: "Syne, sans-serif", fontSize: "1.5rem", fontWeight: 800, color: "#00d4ff" }}>{n}</div>
+              <div style={{ fontSize: "0.72rem", color: "#6b7a9e", marginTop: 2 }}>{l}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* STEPPER */}
+      <div style={{ background: "#0f1422", borderBottom: "1px solid rgba(59,106,240,0.15)" }}>
+        <div style={{ display: "flex", maxWidth: 560, margin: "0 auto", padding: "0 5%" }}>
+          {steps.map((s, i) => (
+            <div key={s} onClick={() => goStep(i)} style={{ flex: 1, textAlign: "center", padding: "13px 0", borderBottom: `2px solid ${i === step ? "#00d4ff" : i < step ? "#1a4fd6" : "transparent"}`, cursor: i < step ? "pointer" : "default" }}>
+              <span style={{ fontFamily: "Syne, sans-serif", fontWeight: 700, fontSize: "0.72rem", color: i === step ? "#00d4ff" : i < step ? "#3b6af0" : "#3a4060", letterSpacing: "0.5px" }}>
+                {i < step ? "✓ " : `${i+1}. `}{s}
+              </span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* CONTENU */}
+      <div style={{ padding: "36px 5% 60px", maxWidth: 960, margin: "0 auto" }}>
+
+        {/* TAGS sélection */}
+        {(brand || model || repair) && (
+          <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 26 }}>
+            {brand && <span className="tag" onClick={() => { setBrand(""); setModel(""); setRepair(""); setStep(0); }} style={{ background: "rgba(26,79,214,0.12)", border: "1px solid rgba(59,106,240,0.3)", color: "#3b6af0", padding: "4px 12px", borderRadius: 20, fontSize: "0.8rem", fontWeight: 600, cursor: "pointer" }}>{data[brand].icon} {brand} ✕</span>}
+            {model && <span className="tag" onClick={() => { setModel(""); setRepair(""); setStep(1); }} style={{ background: "rgba(26,79,214,0.12)", border: "1px solid rgba(59,106,240,0.3)", color: "#3b6af0", padding: "4px 12px", borderRadius: 20, fontSize: "0.8rem", fontWeight: 600, cursor: "pointer" }}>{model} ✕</span>}
+            {repair && <span className="tag" onClick={() => { setRepair(""); setStep(2); }} style={{ background: "rgba(0,212,255,0.08)", border: "1px solid rgba(0,212,255,0.25)", color: "#00d4ff", padding: "4px 12px", borderRadius: 20, fontSize: "0.8rem", fontWeight: 600, cursor: "pointer" }}>{repair} – {price} ✕</span>}
+          </div>
+        )}
+
+        {/* ÉTAPE 0 — MARQUE */}
+        {step === 0 && (
+          <div>
+            <div style={{ fontFamily: "Syne, sans-serif", fontWeight: 800, fontSize: "1.15rem", color: "#fff", marginBottom: 22 }}>Choisissez votre marque</div>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(145px, 1fr))", gap: 14 }}>
+              {Object.entries(data).map(([b, v]) => (
+                <div key={b} className="card" onClick={() => selectBrand(b)} style={{ background: "#131829", border: "1px solid rgba(59,106,240,0.18)", borderRadius: 16, padding: "26px 14px", textAlign: "center" }}>
+                  <div style={{ fontSize: "2rem", marginBottom: 10 }}>{v.icon}</div>
+                  <div style={{ fontFamily: "Syne, sans-serif", fontWeight: 700, fontSize: "0.95rem", color: "#e8eaf6" }}>{b}</div>
+                  <div style={{ fontSize: "0.7rem", color: "#6b7a9e", marginTop: 4 }}>{Object.keys(v.models).length} modèles</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* ÉTAPE 1 — MODÈLE */}
+        {step === 1 && brand && (
+          <div>
+            <div style={{ fontFamily: "Syne, sans-serif", fontWeight: 800, fontSize: "1.15rem", color: "#fff", marginBottom: 18 }}>
+              {data[brand].icon} Choisissez votre modèle <span style={{ color: "#00d4ff" }}>{brand}</span>
+            </div>
+            <input type="text" placeholder="🔍 Rechercher un modèle..." value={search} onChange={e => setSearch(e.target.value)}
+              style={{ ...inp, background: "#131829", marginBottom: 20 }} />
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))", gap: 10 }}>
+              {filteredModels.map(m => (
+                <div key={m} className="card" onClick={() => selectModel(m)}
+                  style={{ background: "#131829", border: "1px solid rgba(59,106,240,0.18)", borderRadius: 12, padding: "15px 18px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                  <span style={{ fontFamily: "Syne, sans-serif", fontWeight: 600, fontSize: "0.88rem", color: "#d8daf0" }}>{m}</span>
+                  <span style={{ color: "#3b6af0", fontSize: "1.1rem", marginLeft: 8 }}>›</span>
+                </div>
+              ))}
+              {filteredModels.length === 0 && (
+                <div style={{ color: "#6b7a9e", fontSize: "0.88rem", gridColumn: "1 / -1", padding: "10px 0" }}>
+                  Modèle introuvable ?{" "}
+                  <span onClick={() => { setModel("Autre modèle"); setStep(3); }} style={{ color: "#00d4ff", cursor: "pointer", textDecoration: "underline" }}>
+                    Continuer et préciser dans le formulaire →
+                  </span>
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+
+        {/* ÉTAPE 2 — RÉPARATION */}
+        {step === 2 && model && (
+          <div>
+            <div style={{ fontFamily: "Syne, sans-serif", fontWeight: 800, fontSize: "1.15rem", color: "#fff", marginBottom: 6 }}>
+              Quelle réparation pour votre <span style={{ color: "#00d4ff" }}>{model}</span> ?
+            </div>
+            <div style={{ color: "#6b7a9e", fontSize: "0.82rem", marginBottom: 24 }}>Tarifs TTC · Main d'œuvre incluse · Garantie 3 mois</div>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(250px, 1fr))", gap: 12 }}>
+              {Object.entries(data[brand].models[model]).map(([r, p]) => (
+                <div key={r} className="rep-card" onClick={() => selectRepair(r, p)}
+                  style={{ background: "#131829", border: "1px solid rgba(59,106,240,0.18)", borderRadius: 14, padding: "18px 22px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                  <div>
+                    <div style={{ fontFamily: "Syne, sans-serif", fontWeight: 700, fontSize: "0.92rem", color: "#e8eaf6", marginBottom: 3 }}>{r}</div>
+                    <div style={{ fontSize: "0.72rem", color: "#6b7a9e" }}>Pièce + main d'œuvre</div>
+                  </div>
+                  <div style={{ fontFamily: "Syne, sans-serif", fontWeight: 800, fontSize: "1.25rem", color: "#00d4ff", marginLeft: 14, whiteSpace: "nowrap" }}>{p}</div>
+                </div>
+              ))}
+              <div className="rep-card" onClick={() => selectRepair("Autre panne", "Sur devis")}
+                style={{ background: "#131829", border: "1px dashed rgba(59,106,240,0.25)", borderRadius: 14, padding: "18px 22px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                <div>
+                  <div style={{ fontFamily: "Syne, sans-serif", fontWeight: 700, fontSize: "0.92rem", color: "#6b7a9e", marginBottom: 3 }}>Autre panne</div>
+                  <div style={{ fontSize: "0.72rem", color: "#3a4060" }}>Diagnostic gratuit</div>
+                </div>
+                <div style={{ fontFamily: "Syne, sans-serif", fontWeight: 800, fontSize: "1rem", color: "#6b7a9e", marginLeft: 14 }}>Sur devis</div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* ÉTAPE 3 — RÉSERVATION */}
+        {step === 3 && (
+          <div>
+            {submitted ? (
+              <div style={{ textAlign: "center", padding: "50px 20px" }}>
+                <div style={{ fontSize: "3.5rem", marginBottom: 18 }}>✅</div>
+                <div style={{ fontFamily: "Syne, sans-serif", fontWeight: 800, fontSize: "1.5rem", color: "#00c97a", marginBottom: 10 }}>Demande envoyée !</div>
+                <div style={{ color: "#6b7a9e", marginBottom: 28, fontSize: "0.92rem" }}>Nous vous contacterons très prochainement pour confirmer votre RDV.</div>
+                <div style={{ background: "rgba(0,201,122,0.06)", border: "1px solid rgba(0,201,122,0.2)", borderRadius: 14, padding: "20px 28px", display: "inline-block", textAlign: "left", marginBottom: 28 }}>
+                  <div style={{ fontSize: "0.72rem", color: "#6b7a9e", fontWeight: 700, textTransform: "uppercase", letterSpacing: 1, marginBottom: 10 }}>Récapitulatif</div>
+                  {[["Appareil", `${brand} ${model}`], ["Réparation", repair], ["Prix estimé", price]].map(([k,v]) => (
+                    <div key={k} style={{ display: "flex", gap: 12, padding: "5px 0", fontSize: "0.9rem" }}>
+                      <span style={{ color: "#6b7a9e", minWidth: 90 }}>{k} :</span>
+                      <span style={{ color: k === "Prix estimé" ? "#00d4ff" : "#e8eaf6", fontWeight: k === "Prix estimé" ? 700 : 400 }}>{v}</span>
+                    </div>
+                  ))}
+                </div>
+                <br />
+                <button className="cta" onClick={reset} style={{ background: "#1a4fd6", color: "#fff", border: "none", padding: "13px 30px", borderRadius: 10, fontFamily: "Syne, sans-serif", fontWeight: 700, fontSize: "0.95rem", cursor: "pointer" }}>
+                  Nouvelle réparation
+                </button>
+              </div>
+            ) : (
+              <div style={{ maxWidth: 640 }}>
+                {/* Récap */}
+                <div style={{ background: "rgba(0,212,255,0.05)", border: "1px solid rgba(0,212,255,0.18)", borderRadius: 14, padding: "18px 22px", marginBottom: 32, display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 10 }}>
+                  <div>
+                    <div style={{ fontSize: "0.7rem", color: "#6b7a9e", textTransform: "uppercase", letterSpacing: 1, marginBottom: 5 }}>Votre sélection</div>
+                    <div style={{ fontFamily: "Syne, sans-serif", fontWeight: 700, fontSize: "0.95rem", color: "#fff" }}>
+                      {brand && data[brand].icon} {model} — {repair}
+                    </div>
+                  </div>
+                  <div style={{ fontFamily: "Syne, sans-serif", fontWeight: 800, fontSize: "1.7rem", color: "#00d4ff" }}>{price}</div>
+                </div>
+
+                <div style={{ fontFamily: "Syne, sans-serif", fontWeight: 800, fontSize: "1.1rem", color: "#fff", marginBottom: 22 }}>Vos coordonnées</div>
+
+                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
+                  {[{l:"Prénom & Nom *",k:"nom",t:"text",ph:"Jean Dupont"},{l:"Téléphone *",k:"tel",t:"tel",ph:"06 12 34 56 78"}].map(f => (
+                    <div key={f.k} style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+                      <label style={{ fontSize: "0.72rem", fontWeight: 700, color: "#6b7a9e", textTransform: "uppercase", letterSpacing: 1 }}>{f.l}</label>
+                      <input type={f.t} placeholder={f.ph} value={form[f.k]} onChange={e => setForm(v => ({ ...v, [f.k]: e.target.value }))} style={inp} />
+                    </div>
+                  ))}
+                  <div style={{ gridColumn: "1 / -1", display: "flex", flexDirection: "column", gap: 6 }}>
+                    <label style={{ fontSize: "0.72rem", fontWeight: 700, color: "#6b7a9e", textTransform: "uppercase", letterSpacing: 1 }}>Informations complémentaires</label>
+                    <textarea placeholder="Décrivez le problème si besoin, précisez votre modèle exact..." rows={3} value={form.info} onChange={e => setForm(v => ({ ...v, info: e.target.value }))} style={inp} />
+                  </div>
+                  <div style={{ gridColumn: "1 / -1" }}>
+                    <button className="cta" onClick={handleSubmit} style={{ width: "100%", background: "#1a4fd6", color: "#fff", border: "none", padding: "15px", borderRadius: 10, fontFamily: "Syne, sans-serif", fontWeight: 700, fontSize: "1rem", cursor: "pointer" }}>
+                      Confirmer ma demande de RDV ›
+                    </button>
+                    <div style={{ fontSize: "0.75rem", color: "#6b7a9e", textAlign: "center", marginTop: 10 }}>Nous vous contacterons dans les plus brefs délais pour confirmer</div>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+        )}
+      </div>
+
+      {/* CONTACT */}
+      <div style={{ background: "#0c1a6e", padding: "22px 5%", display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 14 }}>
+        <div>
+          <div style={{ fontFamily: "Syne, sans-serif", fontWeight: 800, color: "#fff", fontSize: "0.95rem" }}>J&N Phone – Muzillac (56)</div>
+          <div style={{ color: "rgba(255,255,255,0.55)", fontSize: "0.78rem", marginTop: 3 }}>Lun–Sam · 9h–19h · SIRET 102 293 289 00017</div>
+        </div>
+        <div style={{ display: "flex", gap: 10 }}>
+          <a href="tel:+33XXXXXXXXX" style={{ background: "rgba(255,255,255,0.12)", color: "#fff", padding: "8px 16px", borderRadius: 8, fontWeight: 600, fontSize: "0.82rem" }}>📞 Appeler</a>
+          <a href="https://wa.me/33XXXXXXXXX" target="_blank" rel="noreferrer" style={{ background: "rgba(255,255,255,0.12)", color: "#fff", padding: "8px 16px", borderRadius: 8, fontWeight: 600, fontSize: "0.82rem" }}>💬 WhatsApp</a>
+        </div>
+      </div>
+      <div style={{ background: "#050810", textAlign: "center", padding: "18px 5%", color: "#3a4060", fontSize: "0.75rem" }}>
+        © 2026 J&N Phone – Tous droits réservés
+      </div>
+    </div>
+  );
+}
+
+ReactDOM.render(<App />, document.getElementById('root'));
+</script>
+</body>
+</html>
